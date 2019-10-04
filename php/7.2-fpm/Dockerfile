@@ -17,7 +17,15 @@ RUN apt-get update && apt-get install -y \
   zip \
   procps \
   sudo \
+  wget \
   && rm -rf /var/lib/apt/lists/*
+
+RUN wget https://download.libsodium.org/libsodium/releases/LATEST.tar.gz
+RUN tar xvzf LATEST.tar.gz
+RUN cd libsodium-stable && \
+    ./configure && \
+    make && make check && \
+    make install
 
 RUN docker-php-ext-configure \
   gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
@@ -32,7 +40,8 @@ RUN docker-php-ext-install \
   pdo_mysql \
   soap \
   xsl \
-  zip
+  zip \
+  sodium
 
 RUN docker-php-ext-enable sodium
 
