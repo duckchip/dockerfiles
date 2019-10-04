@@ -18,6 +18,7 @@ RUN apt-get update && apt-get install -y \
   procps \
   sudo \
   wget \
+  libmagickwand-dev \
   && rm -rf /var/lib/apt/lists/*
 
 RUN wget https://download.libsodium.org/libsodium/releases/LATEST.tar.gz
@@ -49,6 +50,9 @@ RUN pecl channel-update pecl.php.net \
   && pecl install xdebug \
   && docker-php-ext-enable xdebug \
   && sed -i -e 's/^zend_extension/\;zend_extension/g' /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
+RUN pecl install imagick \
+  && docker-php-ext-enable imagick
 
 # Clean up apt-get update
 RUN rm -rf /var/lib/apt/lists/*
